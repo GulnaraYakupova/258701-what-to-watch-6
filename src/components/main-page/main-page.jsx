@@ -1,9 +1,8 @@
 import React from "react";
-import FilmCard from "../film-card/film-card";
-import {v4} from "uuid";
 import PropTypes from "prop-types";
+import FilmsList from "../films-list/films-list";
 
-const MainPage = ({promoMovie}) => {
+const MainPage = ({promoMovie, films}) => {
   const {
     title: promoTitle,
     genre: promoGenre,
@@ -142,11 +141,7 @@ const MainPage = ({promoMovie}) => {
             </li>
           </ul>
 
-          <div className="catalog__movies-list">
-            {new Array(20).fill(``).map(() => {
-              return <FilmCard key={v4()} />;
-            })}
-          </div>
+          <FilmsList films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">
@@ -179,6 +174,25 @@ MainPage.propTypes = {
     genre: PropTypes.string.isRequired,
     release: PropTypes.number.isRequired,
   }),
+  films: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    posterImage: PropTypes.string.isRequired,
+    previewImage: PropTypes.string.isRequired,
+    backgroundImage: PropTypes.string.isRequired,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string.isRequired,
+    previewVideoLink: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    scoresCount: PropTypes.number.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string.isRequired),
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+  }).isRequired).isRequired
 };
 
 export default MainPage;
