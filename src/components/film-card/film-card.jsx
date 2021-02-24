@@ -24,7 +24,7 @@ const FilmCard = ({name, image, onCardEnter, onCardLeave, id}) => {
 FilmCard.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   onCardEnter: PropTypes.func.isRequired,
   onCardLeave: PropTypes.func.isRequired,
 };
