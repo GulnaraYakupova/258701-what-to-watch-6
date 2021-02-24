@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-const Player = () => {
+const Player = ({poster, title, src}) => {
   return (
     <div className="player">
       <video
-        src="#"
+        src={src}
         className="player__video"
-        poster="img/player-poster.jpg"
+        poster={poster}
       ></video>
 
       <button type="button" className="player__exit">
@@ -35,7 +36,7 @@ const Player = () => {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{title}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">
@@ -47,6 +48,12 @@ const Player = () => {
       </div>
     </div>
   );
+};
+
+Player.propTypes = {
+  poster: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
 };
 
 export default Player;
