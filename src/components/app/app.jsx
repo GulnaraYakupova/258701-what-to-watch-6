@@ -29,7 +29,7 @@ const App = ({promoMovie, filmsData}) => {
           exact
           render={(props) => {
             const film = getFilm(props.match.params.id);
-            return film ? <Film filmData={film} similarList={filmsData.slice(0, 4)} /> : <NotFound />;
+            return film ? <Film filmData={film} similarList={filmsData.filter((item) => film.genre === item.genre && film !== item).slice(0, 4)} /> : <NotFound />;
           }}
         />
         <Route

@@ -18,7 +18,7 @@ const FilmsList = ({films}) => {
   };
 
   return (
-    <div className="catalog__movies-list">
+    <div className="catalog__movies-list" style={{width: `100%`}}>
       {films.map(({name, backgroundImage, id, previewVideoLink}) => (
         <FilmCard
           key={v4()}
