@@ -4,18 +4,31 @@ import PropTypes from "prop-types";
 import {v4} from "uuid";
 
 const FilmsList = ({films}) => {
-  const [, setActive] = useState(null);
+  const [activeCard, setActive] = useState(null);
+
+  let playTimeout = null;
+
+  const handleCardMouseEnter = (id) => {
+    playTimeout = setTimeout(() => setActive(id), 1000);
+  };
+
+  const handleCardMouseLeave = () => {
+    clearTimeout(playTimeout);
+    setActive(null);
+  };
 
   return (
     <div className="catalog__movies-list">
-      {films.map(({name, previewImage, id}) => (
+      {films.map(({name, backgroundImage, id, previewVideoLink}) => (
         <FilmCard
           key={v4()}
           name={name}
-          image={previewImage}
+          image={backgroundImage}
           id={id}
-          onCardEnter={() => setActive(id)}
-          onCardLeave={() => setActive(null)}
+          src={previewVideoLink}
+          onCardEnter={() => handleCardMouseEnter(id)}
+          onCardLeave={handleCardMouseLeave}
+          isPlaying={activeCard === id}
         />
       ))}
     </div>
