@@ -16,7 +16,7 @@ const App = ({promoMovie, filmsData}) => {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact>
-          <MainPage promoMovie={promoMovie} films={filmsData} />
+          <MainPage promoMovie={promoMovie} />
         </Route>
         <Route path="/login" exact render={() => <SingIn />} />
         <Route
