@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import FilmsList from "../films-list/films-list";
+import GenresList from "../genres-list/genres-list";
+import {connect} from 'react-redux';
 
-const MainPage = ({promoMovie, films}) => {
+const MainPage = ({promoMovie, films, filmsToShow}) => {
   const {
     title: promoTitle,
     genre: promoGenre,
@@ -87,61 +89,9 @@ const MainPage = ({promoMovie, films}) => {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
+          <GenresList genres={Array.from(new Set(films.map((film) => film.genre)))} />
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">
-                All genres
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Comedies
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Crime
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Documentary
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Dramas
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Horror
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Kids & Family
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Romance
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Sci-Fi
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Thrillers
-              </a>
-            </li>
-          </ul>
-
-          <FilmsList films={films} />
+          <FilmsList films={filmsToShow} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">
@@ -168,6 +118,11 @@ const MainPage = ({promoMovie, films}) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  films: state.films,
+  filmsToShow: state.filmsToShow,
+});
+
 MainPage.propTypes = {
   promoMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -192,7 +147,27 @@ MainPage.propTypes = {
     genre: PropTypes.string.isRequired,
     released: PropTypes.number.isRequired,
     isFavorite: PropTypes.bool.isRequired,
-  }).isRequired).isRequired
+  }).isRequired).isRequired,
+  filmsToShow: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    posterImage: PropTypes.string.isRequired,
+    previewImage: PropTypes.string.isRequired,
+    backgroundImage: PropTypes.string.isRequired,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string.isRequired,
+    previewVideoLink: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    scoresCount: PropTypes.number.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string.isRequired),
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+  }).isRequired).isRequired,
 };
 
-export default MainPage;
+export {MainPage};
+export default connect(mapStateToProps, null)(MainPage);
