@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import FilmsList from "../films-list/films-list";
 import GenresList from "../genres-list/genres-list";
 import {connect} from 'react-redux';
+import ShowMore from "../show-more/show-more";
 
-const MainPage = ({promoMovie, films, filmsToShow}) => {
+const MainPage = ({promoMovie, films, filmsToShow, shownCount}) => {
   const {
     title: promoTitle,
     genre: promoGenre,
     release: promoRelease,
   } = promoMovie;
+
   return (
     <>
       <section className="movie-card">
@@ -91,13 +93,11 @@ const MainPage = ({promoMovie, films, filmsToShow}) => {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenresList genres={Array.from(new Set(films.map((film) => film.genre)))} />
 
-          <FilmsList films={filmsToShow} />
+          <FilmsList films={filmsToShow.slice(0, shownCount)} />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">
-              Show more
-            </button>
-          </div>
+          {
+            (shownCount < filmsToShow.length) && <ShowMore />
+          }
         </section>
 
         <footer className="page-footer">
@@ -121,6 +121,7 @@ const MainPage = ({promoMovie, films, filmsToShow}) => {
 const mapStateToProps = (state) => ({
   films: state.films,
   filmsToShow: state.filmsToShow,
+  shownCount: state.shownCount,
 });
 
 MainPage.propTypes = {
@@ -167,6 +168,7 @@ MainPage.propTypes = {
     released: PropTypes.number.isRequired,
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired).isRequired,
+  shownCount: PropTypes.number.isRequired,
 };
 
 export {MainPage};
