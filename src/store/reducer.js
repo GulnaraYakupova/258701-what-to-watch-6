@@ -6,6 +6,7 @@ const initialState = {
   genre: genresMap.all,
   films,
   filmsToShow: films,
+  shownCount: 8,
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +23,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         genre: action.payload,
         filmsToShow: films.filter((film) => film.genre === action.payload),
+      };
+
+    case ActionType.SHOW_MORE:
+      return {
+        ...state,
+        shownCount: state.shownCount + 8
+      };
+    case ActionType.RESET_SHOWN_CARDS:
+      return {
+        shownCount: 8,
       };
   }
 

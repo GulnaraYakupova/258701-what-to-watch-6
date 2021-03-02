@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FilmCard from "../film-card/film-card";
 import PropTypes from "prop-types";
 import {v4} from "uuid";
@@ -16,6 +16,12 @@ const FilmsList = ({films}) => {
     clearTimeout(playTimeout);
     setActive(null);
   };
+
+  useEffect(() => {
+    return (() => {
+      clearTimeout(playTimeout);
+    });
+  }, []);
 
   return (
     <div className="catalog__movies-list" style={{width: `100%`}}>

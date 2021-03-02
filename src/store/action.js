@@ -1,5 +1,7 @@
 export const ActionType = {
-  CHANGE_GENRE: `changeGenre`,
+  CHANGE_GENRE: `films/changeGenre`,
+  SHOW_MORE: `films/showMore`,
+  RESET_SHOWN_CARDS: `films/resetShowMore`
 };
 
 export const ActionCreator = {
@@ -7,4 +9,10 @@ export const ActionCreator = {
     type: ActionType.CHANGE_GENRE,
     payload: genre,
   }),
+  showMore: () => ({
+    type: ActionType.SHOW_MORE,
+  }),
+  resetShowMore: () => ({
+    type: ActionType.RESET_SHOWN_CARDS,
+  })
 };
