@@ -1,12 +1,16 @@
 import {ActionType} from "./action";
-import {filmsData as films} from "../mocks/films";
 import {genresMap} from "../utils/utils";
+import {AuthorizationStatus} from '../const';
+import {serverFilmsDataToProject} from '../utils/converter';
 
 const initialState = {
   genre: genresMap.all,
-  films,
-  filmsToShow: films,
+  films: [],
+  filmsToShow: [],
   shownCount: 8,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  isDataLoaded: false,
+  promoMovie: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,7 +36,27 @@ const reducer = (state = initialState, action) => {
       };
     case ActionType.RESET_SHOWN_CARDS:
       return {
+        ...state,
         shownCount: 8,
+      };
+
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload,
+      };
+    case ActionType.LOAD_FILMS:
+      const films = action.payload.map((item) => serverFilmsDataToProject(item));
+      return {
+        ...state,
+        films,
+        filmsToShow: films,
+        isDataLoaded: true
+      };
+    case ActionType.LOAD_PROMO:
+      return {
+        ...state,
+        promoMovie: serverFilmsDataToProject(action.payload),
       };
   }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import MainPage from "../main-page/main-page";
 import PropTypes from "prop-types";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
@@ -8,15 +8,29 @@ import Film from "../film/film";
 import AddReview from "../add-review/add-review";
 import Player from "../player/player";
 import NotFound from "../404/404";
+import {connect} from 'react-redux';
+import {fetchFilmsList, fetchPromoMovie} from '../../store/api-actions';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-const App = ({promoMovie, filmsData}) => {
+const App = ({filmsData, isDataLoaded, onLoadData}) => {
+  useEffect(() => {
+    if (!isDataLoaded) {
+      onLoadData();
+    }
+  }, [isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   const getFilm = (id) => filmsData.find((i) => i.id === Number(id));
-
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact>
-          <MainPage promoMovie={promoMovie} />
+          <MainPage />
         </Route>
         <Route path="/login" exact render={() => <SingIn />} />
         <Route
@@ -69,12 +83,21 @@ const App = ({promoMovie, filmsData}) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  filmsData: state.films,
+  isDataLoaded: state.isDataLoaded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadData() {
+    dispatch(fetchPromoMovie());
+    dispatch(fetchFilmsList());
+  }
+});
+
 App.propTypes = {
-  promoMovie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    genre: PropTypes.string.isRequired,
-    release: PropTypes.number.isRequired,
-  }),
+  onLoadData: PropTypes.func.isRequired,
+  isDataLoaded: PropTypes.bool.isRequired,
   filmsData: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -101,4 +124,4 @@ App.propTypes = {
   }),
 };
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

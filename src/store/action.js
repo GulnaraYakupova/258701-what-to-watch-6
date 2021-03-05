@@ -1,7 +1,10 @@
 export const ActionType = {
   CHANGE_GENRE: `films/changeGenre`,
   SHOW_MORE: `films/showMore`,
-  RESET_SHOWN_CARDS: `films/resetShowMore`
+  RESET_SHOWN_CARDS: `films/resetShowMore`,
+  LOAD_FILMS: `data/loadFilms`,
+  REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
+  LOAD_PROMO: `data/promoMovie`,
 };
 
 export const ActionCreator = {
@@ -14,5 +17,19 @@ export const ActionCreator = {
   }),
   resetShowMore: () => ({
     type: ActionType.RESET_SHOWN_CARDS,
-  })
+  }),
+  loadFilms: (films) => ({
+    type: ActionType.LOAD_FILMS,
+    payload: films,
+  }),
+  loadPromo: (promoMovie) => ({
+    type: ActionType.LOAD_PROMO,
+    payload: promoMovie,
+  }),
+  requireAuthorization: (status) => ({
+    type: ActionType.REQUIRED_AUTHORIZATION,
+    payload: status,
+  }),
 };
+
+export const resetShowMore = () => (dispatch) => (dispatch(ActionCreator.resetShowMore()));
