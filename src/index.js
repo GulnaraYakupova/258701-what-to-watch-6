@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
 import App from "./components/App/App";
-import {filmsData} from "./mocks/films.js";
 import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import {reducer} from "./store/reducer";
