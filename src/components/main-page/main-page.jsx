@@ -1,16 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import FilmsList from "../films-list/films-list";
 import GenresList from "../genres-list/genres-list";
 import {connect} from 'react-redux';
 import ShowMore from "../show-more/show-more";
+import {resetShowMore} from '../../store/action';
 
-const MainPage = ({promoMovie, films, filmsToShow, shownCount}) => {
-  const {
-    title: promoTitle,
-    genre: promoGenre,
-    release: promoRelease,
-  } = promoMovie;
+const MainPage = ({promoMovie, films, filmsToShow, shownCount, onUnmount}) => {
+  useEffect(() => {
+    return () => {
+      onUnmount();
+    };
+  }, [films]);
 
   return (
     <>
@@ -49,18 +50,18 @@ const MainPage = ({promoMovie, films, filmsToShow, shownCount}) => {
           <div className="movie-card__info">
             <div className="movie-card__poster">
               <img
-                src="img/the-grand-budapest-hotel-poster.jpg"
-                alt="The Grand Budapest Hotel poster"
+                src={promoMovie.posterImage}
+                alt={promoMovie.name}
                 width="218"
                 height="327"
               />
             </div>
 
             <div className="movie-card__desc">
-              <h2 className="movie-card__title">{promoTitle}</h2>
+              <h2 className="movie-card__title">{promoMovie.name}</h2>
               <p className="movie-card__meta">
-                <span className="movie-card__genre">{promoGenre}</span>
-                <span className="movie-card__year">{promoRelease}</span>
+                <span className="movie-card__genre">{promoMovie.genre}</span>
+                <span className="movie-card__year">{promoMovie.released}</span>
               </p>
 
               <div className="movie-card__buttons">
@@ -122,13 +123,23 @@ const mapStateToProps = (state) => ({
   films: state.films,
   filmsToShow: state.filmsToShow,
   shownCount: state.shownCount,
+  isDataLoaded: state.isDataLoaded,
+  promoMovie: state.promoMovie,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onUnmount() {
+    dispatch(resetShowMore());
+  }
 });
 
 MainPage.propTypes = {
+  onUnmount: PropTypes.func.isRequired,
   promoMovie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    posterImage: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    release: PropTypes.number.isRequired,
+    released: PropTypes.number.isRequired,
   }),
   films: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -172,4 +183,4 @@ MainPage.propTypes = {
 };
 
 export {MainPage};
-export default connect(mapStateToProps, null)(MainPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

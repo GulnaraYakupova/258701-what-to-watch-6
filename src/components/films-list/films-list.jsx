@@ -18,10 +18,11 @@ const FilmsList = ({films}) => {
   };
 
   useEffect(() => {
+
     return (() => {
       clearTimeout(playTimeout);
     });
-  }, []);
+  }, [films]);
 
   return (
     <div className="catalog__movies-list" style={{width: `100%`}}>
