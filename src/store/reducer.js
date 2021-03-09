@@ -20,13 +20,13 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           genre: action.payload,
-          filmsToShow: films,
+          filmsToShow: state.films,
         };
       }
       return {
         ...state,
         genre: action.payload,
-        filmsToShow: films.filter((film) => film.genre === action.payload),
+        filmsToShow: state.films.filter((film) => film.genre === action.payload),
       };
 
     case ActionType.SHOW_MORE:

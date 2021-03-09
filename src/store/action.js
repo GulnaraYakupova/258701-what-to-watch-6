@@ -5,6 +5,7 @@ export const ActionType = {
   LOAD_FILMS: `data/loadFilms`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   LOAD_PROMO: `data/promoMovie`,
+  REDIRECT_TO_ROUTE: `app/redirectToRoute`,
 };
 
 export const ActionCreator = {
@@ -30,6 +31,10 @@ export const ActionCreator = {
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
   }),
+  redirectToRoute: (url) => ({
+    type: ActionType.REDIRECT_TO_ROUTE,
+    payload: url
+  })
 };
 
 export const resetShowMore = () => (dispatch) => (dispatch(ActionCreator.resetShowMore()));

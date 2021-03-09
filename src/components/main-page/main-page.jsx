@@ -2,11 +2,20 @@ import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import FilmsList from "../films-list/films-list";
 import GenresList from "../genres-list/genres-list";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import ShowMore from "../show-more/show-more";
-import {resetShowMore} from '../../store/action';
+import {resetShowMore} from "../../store/action";
+import {AuthorizationStatus} from "../../const";
+import {Link} from 'react-router-dom';
 
-const MainPage = ({promoMovie, films, filmsToShow, shownCount, onUnmount}) => {
+const MainPage = ({
+  promoMovie,
+  films,
+  filmsToShow,
+  shownCount,
+  onUnmount,
+  authorizationStatus,
+}) => {
   useEffect(() => {
     return () => {
       onUnmount();
@@ -35,14 +44,22 @@ const MainPage = ({promoMovie, films, filmsToShow, shownCount, onUnmount}) => {
           </div>
 
           <div className="user-block">
-            <div className="user-block__avatar">
-              <img
-                src="img/avatar.jpg"
-                alt="User avatar"
-                width="63"
-                height="63"
-              />
-            </div>
+            {authorizationStatus === AuthorizationStatus.AUTH ? (
+              <div className="user-block__avatar">
+                <Link to={`/mylist`}>
+                  <img
+                    src="img/avatar.jpg"
+                    alt="User avatar"
+                    width="63"
+                    height="63"
+                  />
+                </Link>
+              </div>
+            ) : (
+              <Link to="/login" className="user-block__link">
+                Sign in
+              </Link>
+            )}
           </div>
         </header>
 
@@ -92,13 +109,13 @@ const MainPage = ({promoMovie, films, filmsToShow, shownCount, onUnmount}) => {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList genres={Array.from(new Set(films.map((film) => film.genre)))} />
+          <GenresList
+            genres={Array.from(new Set(films.map((film) => film.genre)))}
+          />
 
           <FilmsList films={filmsToShow.slice(0, shownCount)} />
 
-          {
-            (shownCount < filmsToShow.length) && <ShowMore />
-          }
+          {shownCount < filmsToShow.length && <ShowMore />}
         </section>
 
         <footer className="page-footer">
@@ -125,60 +142,66 @@ const mapStateToProps = (state) => ({
   shownCount: state.shownCount,
   isDataLoaded: state.isDataLoaded,
   promoMovie: state.promoMovie,
+  authorizationStatus: state.authorizationStatus,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onUnmount() {
     dispatch(resetShowMore());
-  }
+  },
 });
 
 MainPage.propTypes = {
   onUnmount: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
   promoMovie: PropTypes.shape({
     posterImage: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
     released: PropTypes.number.isRequired,
   }),
-  films: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    posterImage: PropTypes.string.isRequired,
-    previewImage: PropTypes.string.isRequired,
-    backgroundImage: PropTypes.string.isRequired,
-    backgroundColor: PropTypes.string,
-    videoLink: PropTypes.string.isRequired,
-    previewVideoLink: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    scoresCount: PropTypes.number.isRequired,
-    director: PropTypes.string.isRequired,
-    starring: PropTypes.arrayOf(PropTypes.string.isRequired),
-    runTime: PropTypes.number.isRequired,
-    genre: PropTypes.string.isRequired,
-    released: PropTypes.number.isRequired,
-    isFavorite: PropTypes.bool.isRequired,
-  }).isRequired).isRequired,
-  filmsToShow: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    posterImage: PropTypes.string.isRequired,
-    previewImage: PropTypes.string.isRequired,
-    backgroundImage: PropTypes.string.isRequired,
-    backgroundColor: PropTypes.string,
-    videoLink: PropTypes.string.isRequired,
-    previewVideoLink: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    scoresCount: PropTypes.number.isRequired,
-    director: PropTypes.string.isRequired,
-    starring: PropTypes.arrayOf(PropTypes.string.isRequired),
-    runTime: PropTypes.number.isRequired,
-    genre: PropTypes.string.isRequired,
-    released: PropTypes.number.isRequired,
-    isFavorite: PropTypes.bool.isRequired,
-  }).isRequired).isRequired,
+  films: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        posterImage: PropTypes.string.isRequired,
+        previewImage: PropTypes.string.isRequired,
+        backgroundImage: PropTypes.string.isRequired,
+        backgroundColor: PropTypes.string,
+        videoLink: PropTypes.string.isRequired,
+        previewVideoLink: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        rating: PropTypes.number.isRequired,
+        scoresCount: PropTypes.number.isRequired,
+        director: PropTypes.string.isRequired,
+        starring: PropTypes.arrayOf(PropTypes.string.isRequired),
+        runTime: PropTypes.number.isRequired,
+        genre: PropTypes.string.isRequired,
+        released: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
+      }).isRequired
+  ).isRequired,
+  filmsToShow: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        posterImage: PropTypes.string.isRequired,
+        previewImage: PropTypes.string.isRequired,
+        backgroundImage: PropTypes.string.isRequired,
+        backgroundColor: PropTypes.string,
+        videoLink: PropTypes.string.isRequired,
+        previewVideoLink: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        rating: PropTypes.number.isRequired,
+        scoresCount: PropTypes.number.isRequired,
+        director: PropTypes.string.isRequired,
+        starring: PropTypes.arrayOf(PropTypes.string.isRequired),
+        runTime: PropTypes.number.isRequired,
+        genre: PropTypes.string.isRequired,
+        released: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
+      }).isRequired
+  ).isRequired,
   shownCount: PropTypes.number.isRequired,
 };
 

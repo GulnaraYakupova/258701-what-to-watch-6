@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import MainPage from "../main-page/main-page";
 import PropTypes from "prop-types";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {Router as BrowserRouter, Switch, Route} from "react-router-dom";
 import SingIn from "../sign-in/sign-in";
 import MyList from "../my-list/my-list";
 import Film from "../film/film";
@@ -11,6 +11,8 @@ import NotFound from "../404/404";
 import {connect} from 'react-redux';
 import {fetchFilmsList, fetchPromoMovie} from '../../store/api-actions';
 import LoadingScreen from '../loading-screen/loading-screen';
+import PrivateRoute from '../private-route/private-route';
+import browserHistory from '../../browser-history';
 
 const App = ({filmsData, isDataLoaded, onLoadData}) => {
   useEffect(() => {
@@ -27,13 +29,13 @@ const App = ({filmsData, isDataLoaded, onLoadData}) => {
 
   const getFilm = (id) => filmsData.find((i) => i.id === Number(id));
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route path="/" exact>
           <MainPage />
         </Route>
         <Route path="/login" exact render={() => <SingIn />} />
-        <Route
+        <PrivateRoute
           path="/mylist"
           exact
           render={() => <MyList films={filmsData} />}
@@ -46,7 +48,7 @@ const App = ({filmsData, isDataLoaded, onLoadData}) => {
             return film ? <Film filmData={film} similarList={filmsData.filter((item) => film.genre === item.genre && film !== item).slice(0, 4)} /> : <NotFound />;
           }}
         />
-        <Route
+        <PrivateRoute
           path="/films/:id/review"
           exact
           render={(props) => {
@@ -75,6 +77,14 @@ const App = ({filmsData, isDataLoaded, onLoadData}) => {
             );
           }}
         />
+        <Route
+          path="/login"
+          exact
+          render={() => (
+            <SingIn />
+          )}
+        >
+        </Route>
         <Route>
           <NotFound />
         </Route>
