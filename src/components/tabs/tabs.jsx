@@ -15,6 +15,7 @@ const Tabs = ({
   runTime,
   genre,
   released,
+  filmId,
 }) => {
   const [activeTab, setActiveTab] = useState(1);
 
@@ -48,7 +49,7 @@ const Tabs = ({
     {
       id: 3,
       name: `Reviews`,
-      component: <Reviews />,
+      component: <Reviews filmId={filmId} />,
     },
   ];
 
@@ -84,6 +85,7 @@ Tabs.propTypes = {
   runTime: PropTypes.number.isRequired,
   genre: PropTypes.string.isRequired,
   released: PropTypes.number.isRequired,
+  filmId: PropTypes.string.isRequired,
 };
 
 export default Tabs;

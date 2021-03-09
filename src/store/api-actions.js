@@ -11,6 +11,16 @@ export const fetchPromoMovie = () => (dispatch, _getState, api) => {
     .then(({data}) => dispatch(ActionCreator.loadPromo(data)));
 };
 
+export const fetchMovie = (id) => (dispatch, _getState, api) => {
+  return api.get(`/films/${id}`)
+    .then(({data}) => dispatch(ActionCreator.loadMovie(data)));
+};
+
+export const fetchComments = (id) => (dispatch, _getState, api) => {
+  return api.get(`/comments/${id}`)
+    .then(({data}) => dispatch(ActionCreator.loadComment(data)));
+};
+
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`/login`)
   .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))

@@ -11,6 +11,9 @@ const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
   isDataLoaded: false,
   promoMovie: {},
+  currentMovie: {},
+  currentComments: [],
+  isCommentsLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,6 +60,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         promoMovie: serverFilmsDataToProject(action.payload),
+      };
+    case ActionType.LOAD_MOVIE:
+      return {
+        ...state,
+        currentMovie: serverFilmsDataToProject(action.payload)
+      };
+    case ActionType.LOAD_COMMENT:
+      return {
+        ...state,
+        currentComments: action.payload,
+        isCommentsLoaded: true,
+      };
+    case ActionType.RESET_COMMENTS:
+      return {
+        ...state,
+        currentComments: [],
+        isCommentsLoaded: false
       };
   }
 
