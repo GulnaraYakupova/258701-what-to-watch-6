@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import {createAPI} from './api/api';
 import {ActionCreator} from "./store/action";
 import {AuthorizationStatus} from "./const";
-import {checkAuth} from './store/api-actions';
+import {redirect} from './store/middlewares/redirect';
 
 
 const api = createAPI(
@@ -18,9 +18,11 @@ const api = createAPI(
 
 const store = createStore(
     reducer,
-    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api))));
-
-store.dispatch(checkAuth());
+    composeWithDevTools(
+        applyMiddleware(thunk.withExtraArgument(api)),
+        applyMiddleware(redirect)
+    )
+);
 
 ReactDom.render(
     <Provider store={store}>
