@@ -102,6 +102,7 @@ const Film = ({filmData, similarList}) => {
               runTime={runTime}
               genre={genre}
               released={released}
+              filmId={id}
             />
           </div>
         </div>

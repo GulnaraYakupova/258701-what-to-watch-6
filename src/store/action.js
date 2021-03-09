@@ -6,6 +6,9 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   LOAD_PROMO: `data/promoMovie`,
   REDIRECT_TO_ROUTE: `app/redirectToRoute`,
+  LOAD_MOVIE: `data/movie`,
+  LOAD_COMMENT: `data/comment`,
+  RESET_COMMENTS: `data/resetComments`
 };
 
 export const ActionCreator = {
@@ -34,7 +37,19 @@ export const ActionCreator = {
   redirectToRoute: (url) => ({
     type: ActionType.REDIRECT_TO_ROUTE,
     payload: url
+  }),
+  loadMovie: (movie) => ({
+    type: ActionType.LOAD_MOVIE,
+    payload: movie
+  }),
+  loadComment: (comments) => ({
+    type: ActionType.LOAD_COMMENT,
+    payload: comments
+  }),
+  resetComments: () => ({
+    type: ActionType.RESET_COMMENTS,
   })
 };
 
 export const resetShowMore = () => (dispatch) => (dispatch(ActionCreator.resetShowMore()));
+export const resetComments = () => (dispatch) => dispatch(ActionCreator.resetComments());
