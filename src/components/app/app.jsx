@@ -13,6 +13,7 @@ import {fetchFilmsList, fetchPromoMovie} from '../../store/api-actions';
 import LoadingScreen from '../loading-screen/loading-screen';
 import PrivateRoute from '../private-route/private-route';
 import browserHistory from '../../browser-history';
+import {getDataLoadedStatus, getFilms} from "../../store/films-data/selectors";
 
 const App = ({filmsData, isDataLoaded, onLoadData}) => {
   useEffect(() => {
@@ -94,8 +95,8 @@ const App = ({filmsData, isDataLoaded, onLoadData}) => {
 };
 
 const mapStateToProps = (state) => ({
-  filmsData: state.films,
-  isDataLoaded: state.isDataLoaded,
+  filmsData: getFilms(state),
+  isDataLoaded: getDataLoadedStatus(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

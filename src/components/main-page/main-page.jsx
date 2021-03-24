@@ -4,21 +4,24 @@ import FilmsList from "../films-list/films-list";
 import GenresList from "../genres-list/genres-list";
 import {connect} from "react-redux";
 import ShowMore from "../show-more/show-more";
-import {resetShowMore} from "../../store/action";
 import {AuthorizationStatus} from "../../const";
 import {Link} from 'react-router-dom';
+import {getShownCount} from "../../store/app-logic/selectors";
+import {getDataLoadedStatus, getFilms, getFilmsToShow, getPromoMovie} from "../../store/films-data/selectors";
+import {getAuthorizationStatus} from "../../store/user/selectors";
+import {resetShowMoreAct} from '../../store/action';
 
 const MainPage = ({
   promoMovie,
   films,
   filmsToShow,
   shownCount,
-  onUnmount,
+  onResetShowMore,
   authorizationStatus,
 }) => {
   useEffect(() => {
     return () => {
-      onUnmount();
+      onResetShowMore();
     };
   }, [films]);
 
@@ -137,22 +140,22 @@ const MainPage = ({
 };
 
 const mapStateToProps = (state) => ({
-  films: state.films,
-  filmsToShow: state.filmsToShow,
-  shownCount: state.shownCount,
-  isDataLoaded: state.isDataLoaded,
-  promoMovie: state.promoMovie,
-  authorizationStatus: state.authorizationStatus,
+  films: getFilms(state),
+  filmsToShow: getFilmsToShow(state),
+  shownCount: getShownCount(state),
+  isDataLoaded: getDataLoadedStatus(state),
+  promoMovie: getPromoMovie(state),
+  authorizationStatus: getAuthorizationStatus(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onUnmount() {
-    dispatch(resetShowMore());
+  onResetShowMore() {
+    dispatch(resetShowMoreAct());
   },
 });
 
 MainPage.propTypes = {
-  onUnmount: PropTypes.func.isRequired,
+  onResetShowMore: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.string.isRequired,
   promoMovie: PropTypes.shape({
     posterImage: PropTypes.string.isRequired,
@@ -164,7 +167,7 @@ MainPage.propTypes = {
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        posterImage: PropTypes.string.isRequired,
+        posterImage: PropTypes.string,
         previewImage: PropTypes.string.isRequired,
         backgroundImage: PropTypes.string.isRequired,
         backgroundColor: PropTypes.string,
@@ -185,7 +188,7 @@ MainPage.propTypes = {
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        posterImage: PropTypes.string.isRequired,
+        posterImage: PropTypes.string,
         previewImage: PropTypes.string.isRequired,
         backgroundImage: PropTypes.string.isRequired,
         backgroundColor: PropTypes.string,

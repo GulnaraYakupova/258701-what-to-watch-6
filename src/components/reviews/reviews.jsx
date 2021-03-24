@@ -5,6 +5,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import PropTypes from 'prop-types';
 import {v4} from "uuid";
 import {resetComments} from '../../store/action';
+import {getCommentLoadedStatus, getCurrnetComments} from "../../store/films-data/selectors";
 
 const Reviews = ({filmId, comments, isCommentsLoaded, onLoadComments, onUnmount}) => {
 
@@ -52,8 +53,8 @@ const Reviews = ({filmId, comments, isCommentsLoaded, onLoadComments, onUnmount}
 
 
 const mapStateToProps = (state) => ({
-  isCommentsLoaded: state.isCommentsLoaded,
-  comments: state.currentComments,
+  isCommentsLoaded: getCommentLoadedStatus(state),
+  comments: getCurrnetComments(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
