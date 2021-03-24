@@ -1,5 +1,5 @@
 import React from "react";
-import {ActionCreator} from "../../store/action";
+import {showMore} from "../../store/action";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,7 @@ const ShowMore = ({onShowMoreClick}) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onShowMoreClick() {
-    dispatch(ActionCreator.showMore());
+    dispatch(showMore());
   }
 });
 

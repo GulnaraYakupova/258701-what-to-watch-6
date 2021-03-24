@@ -85,7 +85,7 @@ Tabs.propTypes = {
   runTime: PropTypes.number.isRequired,
   genre: PropTypes.string.isRequired,
   released: PropTypes.number.isRequired,
-  filmId: PropTypes.string.isRequired,
+  filmId: PropTypes.number.isRequired,
 };
 
 export default Tabs;
